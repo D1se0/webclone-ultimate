@@ -77,7 +77,8 @@ Opciones relevantes en **Ajustes**:
 2. Pulsa **CLON COMPLETO**.
 3. Interactúa: formularios, POST, navegación, SPA…
 4. Pulsa **FINALIZAR Y RECONSTRUIR**.
-5. Descarga el ZIP y ábrelo con `serve-clone.mjs` si usas módulos ESM.
+5. Descarga el ZIP y ejecuta `node abrir-clon.mjs` dentro de la carpeta (o `ABRIR-CLON.cmd` en
+   Windows) para servirlo y abrirlo automáticamente.
 
 La cookie se aplica a la pestaña y se usa durante la captura. No se guarda en la sesión ni se escribe
 en el ZIP. El HTML y las respuestas sí pueden contener datos visibles de la cuenta.
@@ -107,16 +108,23 @@ Acciones disponibles:
 
 ## 5. Exportar e importar
 
-Exportar produce un ZIP con `metadata.json`, checksums SHA-256, reproductor autónomo y servidor
-opcional. Importar verifica cada entrada y marca la integridad sin descartar la sesión.
+Exportar produce un ZIP con `metadata.json`, checksums SHA-256, reproductor autónomo y un lanzador
+local. Importar verifica cada entrada y marca la integridad sin descartar la sesión.
 
 ```bash
 # Validación externa del ZIP
 node scripts/validate-zip.mjs ruta/al/paquete.zip
 
-# Servir un paquete con módulos ESM
-node serve-clone.mjs ./paquete 8080
+# Abrir el paquete: elige un puerto libre y lanza el navegador
+cd paquete
+node abrir-clon.mjs
+
+# Servidor manual, si prefieres controlar el puerto
+node serve-clone.mjs . 8080
 ```
+
+`abrir-clon.mjs` solo escucha en `127.0.0.1` y no instala dependencias ni envía datos fuera del
+equipo. En Windows se puede ejecutar con doble clic sobre `ABRIR-CLON.cmd`.
 
 ## 6. Problemas frecuentes
 
@@ -128,7 +136,7 @@ node serve-clone.mjs ./paquete 8080
 | El reproductor no arranca | El ZIP no se descomprimió completo | Vuelve a exportar y valida el ZIP |
 | Firefox no mantiene la extensión | Es temporal | Vuelve a cargarla o firma en AMO |
 | El Clon Completo no sirve un POST nuevo | No se observó esa petición | Es determinista por diseño; captura la interacción |
-| `file://` no carga módulos | CORS de módulos | Usa `serve-clone.mjs` |
+| `file://` no carga módulos | CORS de módulos | Usa `abrir-clon.mjs` o `serve-clone.mjs` |
 
 ## 7. Desinstalar
 

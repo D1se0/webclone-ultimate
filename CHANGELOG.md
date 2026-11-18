@@ -2,6 +2,13 @@
 
 Todas las fechas usan el formato AAAA-MM-DD.
 
+## [Unreleased]
+
+### Añadido
+
+- Lanzador automático `abrir-clon.mjs` y atajo `ABRIR-CLON.cmd` incluidos en cada ZIP exportado:
+  elige un puerto libre, sirve solo en `127.0.0.1` y abre la captura en el navegador.
+
 ## [1.2.0] — 2026-11-18
 
 ### Añadido

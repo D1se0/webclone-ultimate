@@ -97,7 +97,9 @@ webclone-export/
 ├── replay.html                 # Reproductor rrweb
 ├── metadata.json               # SHA-256, CRC-32, contadores y privacidad
 ├── README.html                 # Guía incluida en el paquete
-├── serve-clone.mjs             # Servidor local opcional
+├── abrir-clon.mjs              # Lanzador: puerto libre + navegador
+├── ABRIR-CLON.cmd              # Atajo de doble clic para Windows
+├── serve-clone.mjs             # Servidor local manual
 ├── snapshot/
 │   ├── dom.json
 │   ├── state.json
@@ -118,11 +120,17 @@ sesión. Las rutas se validan contra traversal.
 Abrir un paquete:
 
 ```bash
-# Opción 1: doble clic en index.html (scripts clásicos, Chromium)
-# Opción 2: servidor incluido
+# Opción 1 (recomendada): servidor en un puerto libre + navegador automático
+node abrir-clon.mjs
+# En Windows también puedes hacer doble clic en ABRIR-CLON.cmd
+
+# Opción 2: servidor manual
 node serve-clone.mjs . 8080
 # http://127.0.0.1:8080/index.html
 ```
+
+El lanzador no necesita `npm install`: solo requiere Node.js 20 o superior, ya necesario para el
+servidor incluido. Escucha únicamente en `127.0.0.1` y muestra la URL si el navegador no se abre.
 
 ## Arquitectura
 

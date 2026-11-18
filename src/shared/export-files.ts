@@ -18,6 +18,7 @@ import { textFile, type ZipInputFile } from './zip';
 import { buildTimeline, type RrwebEvent, type Timeline } from './timeline';
 import { buildPlayerHtml, buildIndexFallbackHtml } from './player-html';
 import { SERVE_CLONE_SOURCE } from './serve-clone-source';
+import { OPEN_CLONE_SOURCE, OPEN_CLONE_WINDOWS_SOURCE } from './open-clone-source';
 
 export interface ExportAsset {
   path: string;
@@ -196,16 +197,18 @@ export function buildReadmeHtml(input: ExportInput): string {
 
 <h2>Cómo abrir esta captura</h2>
 <ol>
-  <li><strong>Abrir directamente:</strong> haz doble clic en <code>${isRecording ? 'replay.html' : 'index.html'}</code>. Funciona sin servidor en Chrome, Edge y Firefox.</li>
-  <li><strong>Con servidor local (recomendado si hay módulos, fuentes o CSP):</strong>
-    <pre>node serve-clone.mjs .      # o: python3 -m http.server 8080</pre>
-    y visita <code>http://localhost:8080/${isRecording ? 'replay.html' : 'index.html'}</code>.</li>
+  <li><strong>Automático (recomendado):</strong> ejecuta <code>node abrir-clon.mjs</code> dentro de esta carpeta. Elige un puerto libre y abre el navegador; no hay que instalar dependencias. En Windows también puedes hacer doble clic en <code>ABRIR-CLON.cmd</code>. Requiere Node.js 20+.</li>
+  <li><strong>Abrir directamente:</strong> haz doble clic en <code>${isRecording ? 'replay.html' : 'index.html'}</code>. Funciona sin servidor en Chrome, Edge y Firefox; si hay módulos ESM, usa el lanzador.</li>
+  <li><strong>Servidor manual:</strong> <pre>node serve-clone.mjs .</pre> y visita <code>http://127.0.0.1:8080/${isRecording ? 'replay.html' : 'index.html'}</code>.</li>
 </ol>
 
 <h2>Contenido del paquete</h2>
 <table><tbody>
 <tr><th>index.html</th><td>${isRecording ? 'Reproductor de la sesión (idéntico a replay.html)' : 'Instantánea estática de la página'}</td></tr>
 <tr><th>replay.html</th><td>${isRecording ? 'Reproductor de la sesión' : 'Visor de la instantánea con información de la captura'}</td></tr>
+<tr><th>abrir-clon.mjs</th><td>Lanzador automático: servidor en un puerto libre + navegador</td></tr>
+<tr><th>ABRIR-CLON.cmd</th><td>Atajo de doble clic para Windows</td></tr>
+<tr><th>serve-clone.mjs</th><td>Servidor local manual (opcional)</td></tr>
 <tr><th>metadata.json</th><td>Metadatos, checksums SHA-256 y límites de la captura</td></tr>
 <tr><th>snapshot/</th><td>DOM serializado (${isRecording ? 'snapshot inicial de rrweb' : 'html + estado'})</td></tr>
 <tr><th>recording/</th><td>Eventos rrweb y línea temporal${isRecording ? '' : ' (vacío en un Instant Clone)'}</td></tr>
@@ -357,6 +360,8 @@ export async function buildExportFiles(input: ExportInput): Promise<ZipInputFile
   files.push({ path: 'reports/compatibility-report.html', data: textFile(buildCompatibilityReportHtml(input.report, input.session)) });
   files.push({ path: 'README.html', data: textFile(buildReadmeHtml(input)) });
   files.push({ path: 'serve-clone.mjs', data: textFile(SERVE_CLONE_SOURCE) });
+  files.push({ path: 'abrir-clon.mjs', data: textFile(OPEN_CLONE_SOURCE) });
+  files.push({ path: 'ABRIR-CLON.cmd', data: textFile(OPEN_CLONE_WINDOWS_SOURCE.replace(/\n/g, '\r\n')) });
 
   // 5. metadata.json con checksums de todo lo anterior.
   const fileEntries = [];

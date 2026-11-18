@@ -79,8 +79,10 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, '127.0.0.1', () => {
+  const address = server.address();
+  const actualPort = typeof address === 'object' && address ? address.port : port;
   console.log('WebClone Ultimate — sirviendo ' + root);
-  console.log('  http://127.0.0.1:' + port + '/index.html');
-  console.log('  http://127.0.0.1:' + port + '/replay.html');
+  console.log('  http://127.0.0.1:' + actualPort + '/index.html');
+  console.log('  http://127.0.0.1:' + actualPort + '/replay.html');
 });
 `;

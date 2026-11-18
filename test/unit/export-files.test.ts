@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { execFileSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
+import { execFileSync, spawn } from 'node:child_process';
+import { mkdirSync, mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { buildExportFiles, inlineJson } from '../../src/shared/export-files';
 import { buildZip, readZip, zipEntryNames } from '../../src/shared/zip';
 import { sha256Hex } from '../../src/shared/hash';
 import type { CaptureReport, PageState, SessionMeta } from '../../src/shared/types';
 import { rewriteRrwebAssets } from '../../src/shared/rrweb-rewrite';
+import { OPEN_CLONE_SOURCE, OPEN_CLONE_WINDOWS_SOURCE } from '../../src/shared/open-clone-source';
 
 const session: SessionMeta = {
   id: 'clone_test_1',
@@ -76,7 +77,8 @@ describe('export-files (Instant Clone)', () => {
     for (const required of [
       'index.html', 'replay.html', 'metadata.json', 'snapshot/dom.json', 'snapshot/state.json',
       'recording/events.json', 'recording/timeline.json', 'reports/capture-report.json',
-      'reports/compatibility-report.html', 'README.html', 'serve-clone.mjs', 'assets/images/abc.png',
+      'reports/compatibility-report.html', 'README.html', 'serve-clone.mjs', 'abrir-clon.mjs',
+      'ABRIR-CLON.cmd', 'assets/images/abc.png',
     ]) {
       expect(paths).toContain(required);
     }
@@ -99,8 +101,18 @@ describe('export-files (Instant Clone)', () => {
     expect(replayHtml).toContain('Inspector');
 
     const readme = new TextDecoder().decode(files.find((f) => f.path === 'README.html')!.data);
+    expect(readme).toContain('abrir-clon.mjs');
+    expect(readme).toContain('ABRIR-CLON.cmd');
     expect(readme).toContain('serve-clone.mjs');
     expect(readme).toContain('Privacidad');
+
+    const windowsLauncher = new TextDecoder().decode(files.find((f) => f.path === 'ABRIR-CLON.cmd')!.data);
+    expect(windowsLauncher).toContain('\r\n');
+    expect(windowsLauncher).toContain('node abrir-clon.mjs');
+
+    const normalize = (value: string) => value.replace(/\r\n/g, '\n');
+    expect(normalize(OPEN_CLONE_SOURCE)).toBe(normalize(readFileSync('scripts/abrir-clon.mjs', 'utf8')));
+    expect(normalize(OPEN_CLONE_WINDOWS_SOURCE)).toBe(normalize(readFileSync('scripts/ABRIR-CLON.cmd', 'utf8')));
   });
 
   it('produce un ZIP que python zipfile y unzip aceptan', async () => {
@@ -124,6 +136,58 @@ describe('export-files (Instant Clone)', () => {
     const unzipOut = execFileSync('unzip', ['-t', file], { encoding: 'utf8' });
     expect(unzipOut).toContain('No errors detected');
     expect(readZip(readFileSync(file)).get('metadata.json')).toBeTruthy();
+
+    const extractDir = join(dir, 'unzipped');
+    for (const [name, data] of readZip(readFileSync(file))) {
+      const target = join(extractDir, name);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, data);
+    }
+
+    const launcher = spawn(process.execPath, [join(extractDir, 'abrir-clon.mjs'), '--no-open'], {
+      cwd: extractDir,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    let launcherOutput = '';
+    const url = await new Promise<string>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        launcher.kill('SIGKILL');
+        reject(new Error(`el lanzador no publicó una URL. Salida: ${launcherOutput}`));
+      }, 10_000);
+      launcher.stdout?.on('data', (chunk: Buffer) => {
+        launcherOutput += chunk.toString();
+        const match = launcherOutput.match(/http:\/\/127\.0\.0\.1:\d+\/index\.html/);
+        if (match) {
+          clearTimeout(timer);
+          resolve(match[0]);
+        }
+      });
+      launcher.stderr?.on('data', (chunk: Buffer) => {
+        launcherOutput += chunk.toString();
+      });
+      launcher.once('error', (error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+      launcher.once('exit', (code) => {
+        clearTimeout(timer);
+        reject(new Error(`el lanzador terminó con código ${code}. Salida: ${launcherOutput}`));
+      });
+    });
+
+    try {
+      const response = await fetch(url);
+      expect(response.status).toBe(200);
+      expect(await response.text()).toContain('ok');
+    } finally {
+      const exited = new Promise<void>((resolve) => {
+        if (launcher.exitCode !== null) resolve();
+        else launcher.once('exit', () => resolve());
+      });
+      launcher.kill('SIGTERM');
+      await Promise.race([exited, new Promise<void>((resolve) => setTimeout(resolve, 2000))]);
+      if (launcher.exitCode === null) launcher.kill('SIGKILL');
+    }
   });
 });
 

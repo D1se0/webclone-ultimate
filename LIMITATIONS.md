@@ -20,7 +20,7 @@ Este documento separa lo que **no se puede** hacer por restricciones del navegad
 | Vídeo/audio con DRM o autenticación no se captura | DRM y tokens no se eluden | Se registra el fallo; el clon conserva `<video>`/`<audio>` y la posición observada |
 | HLS/DASH no se reconstruyen | Requiere descargar y recomponer segmentos (FFmpeg) y respetar la autorización del sitio | Se capturan manifiestos accesibles si están permitidos; no se descargan segmentos |
 | Las animaciones CSS se reproducen desde el inicio, no desde el fotograma exacto | El CSS capturado define keyframes; el tiempo de animación pertenece al navegador y no se congela con el DOM | El Clon Completo conserva y ejecuta la animación (comprobado `playState=running`); la fase visual puede diferir |
-| Fuentes locales y CSP estricta pueden necesitar servidor | `file://` restringe fuentes y algunos recursos | El ZIP incluye `serve-clone.mjs`; la apertura directa se verificó con fuentes del sistema |
+| Fuentes locales y CSP estricta pueden necesitar servidor | `file://` restringe fuentes y algunos recursos | El ZIP incluye `abrir-clon.mjs` (servidor + navegador) y `serve-clone.mjs`; la apertura directa se verificó con fuentes del sistema |
 | Ancho/alto del viewport distinto al de captura cambia el layout | El clon es responsive como el original | Se registra resolución y DPR en el informe |
 
 ## Clon dinámico y red
@@ -32,7 +32,7 @@ Este documento separa lo que **no se puede** hacer por restricciones del navegad
 | Las respuestas POST son deterministas, no un backend vivo | No hay servidor ni base de datos del sitio; una respuesta capturada no puede calcular el siguiente estado de una operación | Se conservan método, URL, cuerpo de petición y respuesta por ocurrencia; peticiones nuevas dan 504 y se cuentan en `misses` |
 | El journal de sesión vive en memoria del service worker | MV3 puede descargar el worker; el content script conserva el del documento actual, pero no todo el histórico | El popup recupera la sesión activa y `tabs.onUpdated` reengancha; para una garantía total, evita reiniciar el worker en mitad de una navegación |
 | WebSocket, EventSource, `sendBeacon` y service workers no funcionan en el clon | No hay servidor ni canal bidireccional offline; un SW podría intentar red real | El runtime los bloquea y los registra; la UI capturada se conserva, los datos en vivo no |
-| Los módulos ESM requieren el servidor local incluido | `file://` aplica CORS y los módulos no se cargan desde el sistema de ficheros | `serve-clone.mjs` sirve el paquete por HTTP; el test dinámico se ejecuta así. Los scripts clásicos sí funcionan desde `file://` |
+| Los módulos ESM requieren el servidor local incluido | `file://` aplica CORS y los módulos no se cargan desde el sistema de ficheros | `abrir-clon.mjs` sirve el paquete por HTTP y abre el navegador; `serve-clone.mjs` permite elegir puerto manualmente. Los scripts clásicos sí funcionan desde `file://` |
 | El clon dinámico no reproduce estado interno ni lógica no observable | Solo se ejecuta el JS descargado y las respuestas grabadas; el estado de un store en memoria no viaja en el HTML | Se conserva el DOM/HTML y el estado de formularios, scroll y media; para la evolución temporal se usa Full Session Recording |
 | `Forzar JS en frameworks` puede producir una página rota | La hidratación no es determinista fuera de su entorno | Es una opción avanzada y explícita; el modo automático prioriza fidelidad visual |
 

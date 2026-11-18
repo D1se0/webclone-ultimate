@@ -52,7 +52,7 @@ const result = JSON.parse(output.trim().split('\n').pop());
 check('python3 zipfile: CRC-32 válido (testzip)', () => (result.ok ? `${result.count} entradas` : `entrada corrupta: ${result.bad}`));
 check('unzip -t', () => execFileSync('unzip', ['-t', file], { encoding: 'utf8' }).trim().split('\n').pop());
 
-const required = ['index.html', 'replay.html', 'metadata.json', 'snapshot/dom.json', 'snapshot/state.json', 'recording/events.json', 'recording/timeline.json', 'reports/capture-report.json', 'reports/compatibility-report.html', 'README.html'];
+const required = ['index.html', 'replay.html', 'metadata.json', 'snapshot/dom.json', 'snapshot/state.json', 'recording/events.json', 'recording/timeline.json', 'reports/capture-report.json', 'reports/compatibility-report.html', 'README.html', 'serve-clone.mjs', 'abrir-clon.mjs', 'ABRIR-CLON.cmd'];
 const names = new Set(result.names);
 check('estructura esperada', () => {
   const missing = required.filter((path) => !names.has(path));

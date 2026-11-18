@@ -207,7 +207,9 @@ webclone-export/
 ├── replay.html                    # reproductor rrweb
 ├── metadata.json                  # SHA-256 por fichero, contadores y privacidad
 ├── README.html                    # guía del paquete
-├── serve-clone.mjs                # servidor estático opcional
+├── abrir-clon.mjs                 # lanzador: puerto libre + navegador
+├── ABRIR-CLON.cmd                 # doble clic en Windows
+├── serve-clone.mjs                # servidor estático manual
 ├── snapshot/
 │   ├── dom.json                   # snapshot serializado
 │   ├── state.json                 # scroll, formularios, media, canvas, popovers
@@ -265,7 +267,7 @@ comparan el clon con el original; los artefactos quedan en `reports/`.
 ### Recorrido manual recomendado
 
 1. Captura el fixture y observa el informe de recursos.
-2. Abre el ZIP con `node serve-clone.mjs . 8080`.
+2. Abre el ZIP con `node abrir-clon.mjs` (o `serve-clone.mjs` si necesitas el puerto manual).
 3. Repite con el modo dinámico y comprueba `network/responses.json`.
 4. Inicia un Clon Completo, envía un formulario y navega antes de finalizar.
 5. Graba una sesión y revisa el timeline del reproductor exportado.
@@ -286,8 +288,8 @@ Porque no se observó durante la captura. El runtime es determinista: no inventa
 abre una conexión real.
 
 **¿Puedo abrir el clon sin la extensión?**
-Sí. El ZIP incluye `index.html`, `serve-clone.mjs` y todos los recursos. Para módulos ESM usa el
-servidor local; para scripts clásicos también funciona `file://`.
+Sí. El ZIP incluye `index.html`, `abrir-clon.mjs`, `serve-clone.mjs` y todos los recursos. Para
+módulos ESM usa el lanzador automático; para scripts clásicos también funciona `file://`.
 
 **¿Se guarda la cookie de sesión de la captura?**
 No se guarda en la sesión, el storage ni el ZIP. Se usa solo durante la captura. El HTML y las
