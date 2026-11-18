@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebClone Dynamic Fixture — JavaScript y red</title>
+    <link rel="stylesheet" href="dynamic.css" />
+    <link rel="icon" href="dot.svg" />
+  </head>
+  <body>
+    <header class="site-header">
+      <span class="logo">DYN</span>
+      <nav><a href="#top">Inicio</a><a href="#datos">Datos</a></nav>
+      <button id="add-row" type="button">Añadir fila</button>
+      <span class="badge pending" id="extra-status">extra pendiente</span>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <h1>Clon dinámico de WebClone</h1>
+        <p>Esta página se renderiza con JavaScript: módulos ESM, import dinámico, fetch y XHR.</p>
+        <div class="badges">
+          <span class="badge pending" id="status">cargando datos…</span>
+          <span class="badge pending" id="module-status">módulo pendiente</span>
+          <span class="pulse-badge"><i id="pulse"></i> animación activa</span>
+        </div>
+      </section>
+
+      <section class="grid" id="datos">
+        <article class="card">
+          <h2>API REST</h2>
+          <ul id="api-list"><li>esperando…</li></ul>
+        </article>
+        <article class="card">
+          <h2>Módulo ESM</h2>
+          <div id="module-box">cargando módulo…</div>
+        </article>
+        <article class="card">
+          <h2>Interacción</h2>
+          <p>Filas añadidas: <strong id="count">0</strong></p>
+          <ul id="interactive-list"></ul>
+          <p>Sesión guardada: <strong id="session-count">0</strong></p>
+          <button id="session-add" type="button" class="primary">Añadir con red</button>
+          <ul id="session-list"></ul>
+        </article>
+      </section>
+
+      <section class="visual">
+        <div>
+          <h2>Canvas 2D</h2>
+          <canvas id="lienzo" width="320" height="100"></canvas>
+        </div>
+        <div>
+          <h2>Shadow DOM</h2>
+          <div id="host"></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h2>Formulario dinámico</h2>
+        <form id="demo-form">
+          <label>Nombre <input id="nombre" name="nombre" type="text" autocomplete="name" /></label>
+          <button type="submit" class="primary">Aplicar</button>
+        </form>
+      </section>
+
+      <section class="frame-section">
+        <h2>Iframe same-origin</h2>
+        <iframe id="marco" src="frame.html" title="frame dinámico" width="360" height="110"></iframe>
+      </section>
+    </main>
+
+    <footer class="site-footer">Fixture dinámico · WebClone Ultimate</footer>
+    <script src="classic-app.js"></script>
+    <script type="module" src="dynamic-app.mjs"></script>
+  </body>
+</html>

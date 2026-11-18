@@ -1,0 +1,30 @@
+name: Propuesta de funcionalidad
+description: Una capacidad nueva o una mejora concreta.
+title: '[feature] '
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: ¿Qué no puedes hacer hoy?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Describe el comportamiento esperado y los límites.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Alcance
+      options:
+        - label: Entiendo que las limitaciones de same-origin, DRM y backend no se pueden eludir.
+          required: true

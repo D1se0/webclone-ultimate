@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="g1" cx="82%" cy="18%" r="65%">
+      <stop offset="0" stop-color="#d8ff5f" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#d8ff5f" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#e5f1da" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#080b09"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <g transform="translate(74 72)">
+    <rect width="58" height="58" rx="15" fill="#d8ff5f"/>
+    <path d="M14 17 24 44l10-15 10 15 10-27" fill="none" stroke="#0a0f0b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="76" y="27" fill="#f1f4e8" font-family="system-ui,sans-serif" font-size="22" font-weight="600">WebClone</text>
+    <text x="76" y="52" fill="#9da99b" font-family="monospace" font-size="12" letter-spacing="3">ULTIMATE</text>
+  </g>
+  <text x="74" y="300" fill="#f1f4e8" font-family="system-ui,sans-serif" font-size="96" font-weight="600" letter-spacing="-6">La memoria visual</text>
+  <text x="74" y="395" fill="#d8ff5f" font-family="system-ui,sans-serif" font-size="96" font-weight="600" letter-spacing="-6">de la web.</text>
+  <text x="78" y="468" fill="#9da99b" font-family="monospace" font-size="17">DOM · CSSOM · NETWORK · SESSION · ZIP VERIFICABLE</text>
+  <g transform="translate(850 300)">
+    <circle cx="120" cy="120" r="120" fill="none" stroke="#e5f1da" stroke-opacity=".18" stroke-dasharray="5 8"/>
+    <circle cx="120" cy="120" r="82" fill="none" stroke="#e5f1da" stroke-opacity=".12"/>
+    <rect x="38" y="38" width="164" height="164" rx="30" fill="#111712" stroke="#e5f1da" stroke-opacity=".24"/>
+    <circle cx="120" cy="120" r="48" fill="#d8ff5f"/>
+    <path d="M98 102 110 138l10-16 10 16 12-36" fill="none" stroke="#0a0f0b" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="238" cy="18" r="21" fill="#ff7761"/>
+    <circle cx="8" cy="228" r="14" fill="#65e7df"/>
+  </g>
+  <text x="74" y="576" fill="#677266" font-family="monospace" font-size="14">OPEN SOURCE · MIT · 100% LOCAL</text>
+</svg>

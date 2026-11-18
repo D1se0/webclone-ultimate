@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebClone Ultimate — Reproducción</title>
+    <link rel="stylesheet" href="replay.css" />
+  </head>
+  <body>
+    <header class="top">
+      <span class="badge">WebClone <b>Ultimate</b></span>
+      <span class="divider"></span>
+      <strong class="title" id="session-title">Cargando sesión…</strong>
+      <span class="url mono" id="session-url"></span>
+      <span class="meta mono" id="session-meta"></span>
+      <button class="ghost" id="btn-screenshot" title="Guardar captura del instante actual">Captura</button>
+      <button class="ghost" id="btn-export" title="Exportar ZIP">Exportar</button>
+      <button class="ghost" id="btn-inspector" title="Inspector de captura">Inspector</button>
+    </header>
+
+    <main class="stage" id="stage"></main>
+
+    <section class="notice" id="notice" hidden></section>
+
+    <section class="controls" id="controls">
+      <div class="row">
+        <button class="primary" id="btn-play">▶ Play</button>
+        <span class="time mono" id="time">0:00.0 / 0:00.0</span>
+        <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Línea temporal" />
+        <div class="speeds" id="speeds">
+          <button data-speed="0.25">0.25×</button>
+          <button data-speed="0.5">0.5×</button>
+          <button data-speed="1" class="active">1×</button>
+          <button data-speed="2">2×</button>
+          <button data-speed="4">4×</button>
+        </div>
+        <button id="btn-prev" title="Evento anterior">◀</button>
+        <button id="btn-next" title="Evento siguiente">▶|</button>
+        <button id="btn-full" title="Pantalla completa">⛶</button>
+      </div>
+    </section>
+
+    <aside class="panel" id="panel">
+      <div class="tabs">
+        <button data-tab="marks" class="active">Timeline</button>
+        <button data-tab="events">Eventos</button>
+        <button data-tab="errors">Errores</button>
+        <button data-tab="network">Red</button>
+        <button data-tab="info">Inspector</button>
+      </div>
+      <div class="pane" data-pane="marks"><table><thead><tr><th>Tiempo</th><th>Tipo</th><th>Evento</th><th>Detalle</th></tr></thead><tbody id="marks-body"></tbody></table></div>
+      <div class="pane" data-pane="events" hidden><table><thead><tr><th>#</th><th>Tiempo</th><th>Tipo</th><th>Detalle</th></tr></thead><tbody id="events-body"></tbody></table></div>
+      <div class="pane" data-pane="errors" hidden><div id="errors-body" class="pad"></div></div>
+      <div class="pane" data-pane="network" hidden><div id="network-body" class="pad"></div></div>
+      <div class="pane" data-pane="info" hidden><div id="info-body" class="pad"></div></div>
+    </aside>
+
+    <script src="replay.js"></script>
+  </body>
+</html>

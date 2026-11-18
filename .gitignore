@@ -1,0 +1,38 @@
+# Dependencias
+node_modules/
+website/node_modules/
+
+# Builds y artefactos
+dist/
+artifacts/
+website/dist/
+website/test-results/
+website/playwright-report/
+reports/
+test-results/
+playwright-report/
+*.zip
+
+# Datos locales y secretos
+.portal-deploy/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+deploy-key*
+!deploy-key.pub
+credentials.json
+admin-password
+container.env
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+*.tsbuildinfo
+coverage/

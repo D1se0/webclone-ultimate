@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://d1se0.github.io/webclone-ultimate/sitemap.xml

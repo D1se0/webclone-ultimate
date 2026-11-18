@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Seguridad
+    url: https://github.com/D1se0/webclone-ultimate/security/advisories/new
+    about: Reporta vulnerabilidades de forma privada.
+  - name: Documentación
+    url: https://d1se0.github.io/webclone-ultimate/#docs
+    about: Instalación, uso, límites y solución de problemas.

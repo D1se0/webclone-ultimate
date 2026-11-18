@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebClone Fixture — página de pruebas</title>
+    <link rel="stylesheet" href="fixture.css" />
+    <link rel="icon" href="dot.svg" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: 'unsafe-inline'" />
+  </head>
+  <body>
+    <header class="site-header">
+      <span class="logo">WC</span>
+      <nav><a href="#uno">Uno</a><a href="#dos">Dos</a><a href="#tres">Tres</a></nav>
+      <button id="toggle-details" type="button">Añadir tarjeta</button>
+    </header>
+
+    <main>
+      <section class="hero" id="uno">
+        <h1>Página de pruebas de WebClone</h1>
+        <p>Fixture determinista para validar captura de DOM, CSS, sombras, canvas y estado.</p>
+        <div class="hero-actions"><button type="button" class="primary">Acción</button><button type="button">Secundaria</button></div>
+      </section>
+
+      <section class="cards" id="dos">
+        <article class="card"><h2>Tarjeta A</h2><p>Texto de ejemplo con <strong>negrita</strong> y <em>cursiva</em>.</p></article>
+        <article class="card"><h2>Tarjeta B</h2><p>Layout flexible con sombra y borde.</p></article>
+        <article class="card"><h2>Tarjeta C</h2><p>Imagen vectorial: <img src="dot.svg" alt="punto" width="16" height="16" /></p></article>
+      </section>
+
+      <section class="form-section" id="tres">
+        <h2>Formulario con estado</h2>
+        <form id="demo-form">
+          <label>Nombre <input id="nombre" name="nombre" type="text" autocomplete="name" /></label>
+          <label>Email <input id="email" name="email" type="email" autocomplete="email" /></label>
+          <label>Contraseña <input id="clave" name="clave" type="password" value="super-secreta-123" /></label>
+          <label>Comentarios <textarea id="comentarios" name="comentarios"></textarea></label>
+          <label class="inline"><input id="acepto" type="checkbox" /> Acepto</label>
+          <label>País <select id="pais"><option value="es">España</option><option value="fr">Francia</option><option value="it">Italia</option></select></label>
+          <button type="submit" class="primary">Enviar</button>
+        </form>
+      </section>
+
+      <section class="visual">
+        <div class="canvas-wrap"><h2>Canvas 2D</h2><canvas id="lienzo" width="360" height="120"></canvas></div>
+        <div class="shadow-wrap"><h2>Shadow DOM</h2><div id="host"></div></div>
+      </section>
+
+      <section class="media">
+        <h2>Audio</h2>
+        <audio id="audio" controls preload="metadata" src="sine.wav"></audio>
+        <h2>Iframe same-origin</h2>
+        <iframe id="marco" src="frame.html" title="frame de prueba" width="360" height="110"></iframe>
+      </section>
+
+      <section class="scroll-panel">
+        <h2>Panel con scroll</h2>
+        <div class="scroller" id="scroller">
+          <p>Elemento 1</p><p>Elemento 2</p><p>Elemento 3</p><p>Elemento 4</p><p>Elemento 5</p>
+          <p>Elemento 6</p><p>Elemento 7</p><p>Elemento 8</p><p>Elemento 9</p><p>Elemento 10</p>
+        </div>
+      </section>
+
+      <details open>
+        <summary>Detalle abierto</summary>
+        <p>Contenido visible del detalle.</p>
+      </details>
+
+      <dialog open>
+        <p>Diálogo no modal abierto</p>
+      </dialog>
+
+      <section class="tall"><h2>Sección alta</h2><p>Relleno para permitir scroll de página.</p></section>
+    </main>
+
+    <footer class="site-footer">Fixture local · WebClone Ultimate</footer>
+
+    <script>
+      // Estado inicial determinista (equivalente a lo que haría una SPA).
+      document.getElementById('nombre').value = 'Ada Lovelace';
+      document.getElementById('email').value = 'ada@example.test';
+      document.getElementById('comentarios').value = 'Comentario de prueba\nsegunda línea';
+      document.getElementById('acepto').checked = true;
+      document.getElementById('pais').selectedIndex = 1;
+      document.getElementById('scroller').scrollTop = 60;
+
+      const canvas = document.getElementById('lienzo');
+      const ctx = canvas.getContext('2d');
+      const gradient = ctx.createLinearGradient(0, 0, 360, 120);
+      gradient.addColorStop(0, '#0b0b0d');
+      gradient.addColorStop(1, '#ef4444');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 360, 120);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('canvas capturado', 60, 66);
+
+      const host = document.getElementById('host');
+      const root = host.attachShadow({ mode: 'open' });
+      root.innerHTML =
+        '<style>.box{padding:10px;border:1px solid #333;border-radius:8px;background:#f5f5f7;font:13px system-ui}</style>' +
+        '<div class="box"><strong>Shadow DOM</strong><p>Contenido encapsulado con su propio estilo.</p><slot></slot></div>';
+      const extra = document.createElement('span');
+      extra.textContent = ' (slot)';
+      host.appendChild(extra);
+
+      document.getElementById('toggle-details').addEventListener('click', () => {
+        const card = document.createElement('article');
+        card.className = 'card added';
+        card.innerHTML = '<h2>Tarjeta añadida</h2><p>Generada por interacción durante la grabación.</p>';
+        document.querySelector('.cards').appendChild(card);
+      });
+    </script>
+  </body>
+</html>
