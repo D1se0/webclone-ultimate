@@ -224,7 +224,8 @@ comprueba assets, secciones y rutas antes de publicar.
 
 - **CI** ejecuta typecheck, unitarios, build y E2E de la extensión y de la web.
 - **Pages** construye `website/` y publica `website/dist` en GitHub Pages.
-- **Release** empaqueta Chrome/Firefox al publicar un tag `v*`.
+- **Release** usa las notas de `docs/releases/<tag>.md` y adjunta los ZIP de Chrome/Firefox y
+  `SHA256SUMS.txt`.
 
 La guía paso a paso, incluida la configuración de Pages y las claves, está en
 [`docs/PUBLICAR.md`](docs/PUBLICAR.md).

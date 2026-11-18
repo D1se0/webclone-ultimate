@@ -13,6 +13,7 @@ Todas las fechas usan el formato AAAA-MM-DD.
 - GitHub Actions para CI, Pages, release, suite externa y Dependabot.
 - Documentación de instalación, pruebas, publicación, seguridad y arquitectura de la web.
 - Clave RSA de despliegue y guía de deploy key.
+- Release v1.2.0 con notas específicas para Chrome/Firefox y checksums SHA-256 adjuntos.
 
 ### Conservado
 

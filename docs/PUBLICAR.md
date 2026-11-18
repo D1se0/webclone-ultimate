@@ -97,12 +97,18 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-El tag dispara [`release.yml`](../.github/workflows/release.yml), que valida, construye y adjunta:
+Las notas se leen de `docs/releases/<tag>.md`; deben existir antes de crear el tag. El tag dispara
+[`release.yml`](../.github/workflows/release.yml), que valida, construye y adjunta:
 
 ```text
 webclone-ultimate-chrome-1.2.0.zip
 webclone-ultimate-firefox-1.2.0.zip
+SHA256SUMS.txt
 ```
+
+El workflow crea la release con `--notes-file`, no con las notas automáticas de GitHub. Si la release
+ya existe, vuelve a subir los assets con `--clobber`, lo que permite reintentar el job sin crear una
+release duplicada.
 
 ## Checklist antes de hacer público el repositorio
 
